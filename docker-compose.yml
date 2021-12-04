@@ -5,14 +5,13 @@ services:
     image: mysql:5.7
     restart: always
     ports:
-    - ${IP}:3306:3306
+      - ${IP}:3306:3306
     environment:
       MYSQL_DATABASE: "${DB_NAME}"
       MYSQL_USER: "${DB_USER_NAME}"
       MYSQL_PASSWORD: "${DB_USER_PASSWORD}"
       MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
     volumes:
-      - db_data:/var/lib/mysql/
       - ./wp-data/:/docker-entrypoint-initdb.d/
 
   wp:
@@ -21,7 +20,7 @@ services:
       - db
     restart: always
     ports:
-      - ${IP}:8080:80
+      - ${IP}:80:80
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: "${DB_NAME}"
@@ -31,7 +30,7 @@ services:
       - type: bind
         source: ${PWD}/config/php/uploads.ini
         target: /usr/local/etc/php/conf.d/uploads.ini
-      - ./wp-app:/var/www/html # Full wordpress project
+      - ./wp-app/:/var/www/html/ # Full wordpress project
       #- ./plugin-name/:/var/www/html/wp-content/plugins/plugin-name  # Plugin development
       #- ./theme-name/:/var/www/html/wp-content/themes/theme-name     # Theme development
 
@@ -50,10 +49,10 @@ services:
 
   pma:
     image: phpmyadmin
-    depends_on: 
+    depends_on:
       - db
     ports:
-    - ${IP}:8081:80
+      - ${IP}:8081:80
     environment:
       PMA_USER: root
       PMA_PASSWORD: "${DB_ROOT_PASSWORD}"
@@ -63,4 +62,4 @@ services:
         target: /usr/local/etc/php/conf.d/uploads.ini
 
 volumes:
-  db_data:
+  db_data: null
