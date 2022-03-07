@@ -8,7 +8,7 @@ _file="wp-data/data_$_now.sql"
 
 # Export dump
 EXPORT_COMMAND="exec mysqldump $DB_NAME -uroot -p$DB_ROOT_PASSWORD"
-docker-compose exec db sh -c "$EXPORT_COMMAND" > $_file
+docker-compose exec --no-TTY db sh -c "$EXPORT_COMMAND" > $_file
 
 if [[ $_os == "Darwin"* ]] ; then
   sed -i '.bak' 1,1d $_file
